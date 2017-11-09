@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build.md": "node buildMd.js",
+    "build": "maw",
     "start": "maw dev"
   },
   "author": "",
