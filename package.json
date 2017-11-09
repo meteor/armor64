@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "maw dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "maw": "^0.6.0"
+    "maw": "^0.6.0",
+    "showdown": "^1.8.1"
   }
 }

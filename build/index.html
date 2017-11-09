@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Armor64</title>
+  </head>
+  <body>
+    <h1 id="armor64safestrictandstabletextualencodingofbytestreams">Armor64: safe, strict and stable textual encoding of byte streams</h1>
+    <h2 id="safety">Safety</h2>
+    <p>Encoded streams rely only on ASCII printable characters and can be used unescaped in:</p>
+    <ul>
+    <li>URLs (paths, query strings, fragments, etc.);</li>
+    <li>JSON with ASCII-based encoding, including UTF-8;</li>
+    <li>Web form data over GET and POST;</li>
+    <li>Strings in C, shell, etc.</li>
+    </ul>
+    <h2 id="strictness">Strictness</h2>
+    <p>There is only one Armor64 encoding for a given byte stream.<br />
+    If streams are equal, encoded streams are equal, and vice-versa.<br />
+    Encoders and decoders are required to enforce this rule.<br />
+    An encoded stream can be validated during decoding or in one pass.</p>
+    <h2 id="stability">Stability</h2>
+    <p>Armor64 is stable in two ways:</p>
+    <ul>
+    <li>Encoding preserves natural byte order, regardless of byte signedness.</li>
+    <li>There are no variants and the specification will not be revised.</li>
+    </ul>
+    <h2 id="faq">FAQ</h2>
+    <h3 id="whynotbase64">Why not Base64?</h3>
+    <p>Base64 is effectively not a specific encoding but rather <a href="https://en.wikipedia.org/wiki/Base64#Variants_summary_table">a family of encodings</a>.<br />
+    <code>=</code>-padding is often possible, sometimes required. Many libraries do not offer unpadded variants.<br />
+    Some variants allow newlines, some don't.<br />
+    Some variants use a URL-safe alphabet, some don't.<br />
+    Few variants specify a canonical encoding, fewer mandate that it be used.<br />
+    None of the variants use an alphabet that preserves natural byte order.</p>
+    <p>This can lead to ambiguity and confusion for developers, for example when picking implementations or documenting formats.</p>
+    <p>Armor64 uniquely identifies a specification for encoding and decoding bounded byte streams.<br />
+    <a href="https://armor64.org">armor64.org</a> provides language-agnostic acceptance tests and community implementations for many languages.</p>
+    <h3 id="whataboutpostelslaw">What about Postel's law?</h3>
+    <blockquote>
+      <p>In general, an implementation should be conservative in its sending behavior, and liberal in its receiving behavior.</p>
+    </blockquote>
+    <p>We could not better <a href="https://tools.ietf.org/html/draft-thomson-postel-was-wrong-00">Martin Thomson's 2015 Internet-Draft</a> on the topic.</p>
+    <h3 id="whyreorderthebase64urlalphabet">Why reorder the base64url alphabet?</h3>
+    <p>We want byte streams to be ordered like their encoding in the natural byte order.</p>
+    <p>As a result, situations where one side uses Armor64, the other Base64 are very unlikely to go unnoticed.<br />
+    Had the alphabets been shared, problems could have arisen too late.</p>
+    <p>We believe in failing fast and hard.</p>
+    <h3 id="whyarenewlinesforbidden">Why are newlines forbidden?</h3>
+    <p>We want the encoding of byte streams to be unique, and we want to avoid escaping in URLs, JSON-based protocols, etc.</p>
+    <p>Too often, most byte streams remain comparatively short during development and in test cases.<br />
+    In Base64, only long byte streams involve newlines.<br />
+    As a result, mishandling of newlines in transport or decoders can be discovered too late.</p>
+    <p>We believe in failing fast and hard.</p>
+    <h2 id="specificationdraft">Specification DRAFT</h2>
+    <h3 id="encoding">Encoding</h3>
+    <p>Input streams are consumed from left to right in blocks of 6 bits.<br />
+    If fewer than 6 bits are left at the end of the input stream, they are right-padded with '0' bits to form the last block.<br />
+    Each block is converted to output a single byte according to the following table:</p>
+    <p>|              | <strong><code>….00</code></strong>          | <strong><code>….01</code></strong>          | <strong><code>….10</code></strong>          | <strong><code>….11</code></strong>          |
+    | ------------ | --------------------- | --------------------- | --------------------- | --------------------- |
+    | <strong><code>0000..</code></strong> | <code>000000</code> ↔ <code>-</code> (0x2D) | <code>000001</code> ↔ <code>0</code> (0x30) | <code>000010</code> ↔ <code>1</code> (0x31) | <code>000011</code> ↔ <code>2</code> (0x32) |
+    | <strong><code>0001..</code></strong> | <code>000100</code> ↔ <code>3</code> (0x33) | <code>000101</code> ↔ <code>4</code> (0x34) | <code>000110</code> ↔ <code>5</code> (0x35) | <code>000111</code> ↔ <code>6</code> (0x36) |
+    | <strong><code>0010..</code></strong> | <code>001000</code> ↔ <code>7</code> (0x37) | <code>001001</code> ↔ <code>8</code> (0x38) | <code>001010</code> ↔ <code>9</code> (0x39) | <code>001011</code> ↔ <code>A</code> (0x41) |
+    | <strong><code>0011..</code></strong> | <code>001100</code> ↔ <code>B</code> (0x42) | <code>001101</code> ↔ <code>C</code> (0x43) | <code>001110</code> ↔ <code>D</code> (0x44) | <code>001111</code> ↔ <code>E</code> (0x45) |
+    | <strong><code>0100..</code></strong> | <code>010000</code> ↔ <code>F</code> (0x46) | <code>010001</code> ↔ <code>G</code> (0x47) | <code>010010</code> ↔ <code>H</code> (0x48) | <code>010011</code> ↔ <code>I</code> (0x49) |
+    | <strong><code>0101..</code></strong> | <code>010100</code> ↔ <code>J</code> (0x4A) | <code>010101</code> ↔ <code>K</code> (0x4B) | <code>010110</code> ↔ <code>L</code> (0x4C) | <code>010111</code> ↔ <code>M</code> (0x4D) |
+    | <strong><code>0110..</code></strong> | <code>011000</code> ↔ <code>N</code> (0x4E) | <code>011001</code> ↔ <code>O</code> (0x4F) | <code>011010</code> ↔ <code>P</code> (0x50) | <code>011011</code> ↔ <code>Q</code> (0x51) |
+    | <strong><code>0111..</code></strong> | <code>011100</code> ↔ <code>R</code> (0x52) | <code>011101</code> ↔ <code>S</code> (0x53) | <code>011110</code> ↔ <code>T</code> (0x54) | <code>011111</code> ↔ <code>U</code> (0x55) |
+    | <strong><code>1000..</code></strong> | <code>100000</code> ↔ <code>V</code> (0x56) | <code>100001</code> ↔ <code>W</code> (0x57) | <code>100010</code> ↔ <code>X</code> (0x58) | <code>100011</code> ↔ <code>Y</code> (0x59) |
+    | <strong><code>1001..</code></strong> | <code>100100</code> ↔ <code>Z</code> (0x5A) | <code>100101</code> ↔ <code>_</code> (0x5F) | <code>100110</code> ↔ <code>a</code> (0x61) | <code>100111</code> ↔ <code>b</code> (0x62) |
+    | <strong><code>1010..</code></strong> | <code>101000</code> ↔ <code>c</code> (0x63) | <code>101001</code> ↔ <code>d</code> (0x64) | <code>101010</code> ↔ <code>e</code> (0x65) | <code>101011</code> ↔ <code>f</code> (0x66) |
+    | <strong><code>1011..</code></strong> | <code>101100</code> ↔ <code>g</code> (0x67) | <code>101101</code> ↔ <code>h</code> (0x68) | <code>101110</code> ↔ <code>i</code> (0x69) | <code>101111</code> ↔ <code>j</code> (0x6A) |
+    | <strong><code>1100..</code></strong> | <code>110000</code> ↔ <code>k</code> (0x6B) | <code>110001</code> ↔ <code>l</code> (0x6C) | <code>110010</code> ↔ <code>m</code> (0x6D) | <code>110011</code> ↔ <code>n</code> (0x6E) |
+    | <strong><code>1101..</code></strong> | <code>110100</code> ↔ <code>o</code> (0x6F) | <code>110101</code> ↔ <code>p</code> (0x70) | <code>110110</code> ↔ <code>q</code> (0x71) | <code>110111</code> ↔ <code>r</code> (0x72) |
+    | <strong><code>1110..</code></strong> | <code>111000</code> ↔ <code>s</code> (0x73) | <code>111001</code> ↔ <code>t</code> (0x74) | <code>111010</code> ↔ <code>u</code> (0x75) | <code>111011</code> ↔ <code>v</code> (0x76) |
+    | <strong><code>1111..</code></strong> | <code>111100</code> ↔ <code>w</code> (0x77) | <code>111101</code> ↔ <code>x</code> (0x78) | <code>111110</code> ↔ <code>y</code> (0x79) | <code>111111</code> ↔ <code>z</code> (0x7A) |</p>
+    <h3 id="decoding">Decoding</h3>
+    <p>Input streams are consumed from left to right and each byte is turned into a block of 6 bits according to the previous table.<br />
+    When encountering a byte that do not appear in the conversion table, the input stream is rejected.<br />
+    Those blocks form a stream consumed from left to right to output a byte every 8 bits.<br />
+    At the end of the input stream, if any of the remaining bits are not '0', the input stream is rejected.</p>
+  </body>
+</html>
