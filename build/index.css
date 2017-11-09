@@ -1,0 +1,8 @@
+* {
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+.content {
+  margin: 30px auto;
+  max-width: 800px;
+}
