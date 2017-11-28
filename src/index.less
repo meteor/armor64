@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-// * { outline: 1px dashed #f00; }
+* { outline: 1px dashed fade(#f00, 10%); }
 
 @normal: 30px;
 @maxwidth: 800px;
@@ -35,9 +35,39 @@ h1, h2 {
   margin-top: @normal * 2.5;
 }
 
+h3 {
+  margin-top: @normal * 1.5;
+}
+
+p, ul, li {
+  line-height: 1.4;
+}
+
+p {
+  margin-bottom: @normal;
+}
+
+ul {
+  
+}
+
+blockquote {
+  font-family: 'Ubuntu Mono', monospace;
+  border-left: 1px solid @color-gray;
+  margin: 0;
+  padding: 0 @normal;
+}
+
 .content {
   margin: 4 * @normal auto;
   max-width: @maxwidth;
+}
+
+@media (max-width: @maxwidth) {
+  .content {
+    margin-left: @normal;
+    margin-right: @normal;
+  }
 }
 
 table {

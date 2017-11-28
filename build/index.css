@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box;
 }
+* {
+  outline: 1px dashed rgba(255, 0, 0, 0.1);
+}
 body {
   display: inline-block;
   width: 100%;
@@ -35,9 +38,32 @@ h1,
 h2 {
   margin-top: 75px;
 }
+h3 {
+  margin-top: 45px;
+}
+p,
+ul,
+li {
+  line-height: 1.4;
+}
+p {
+  margin-bottom: 30px;
+}
+blockquote {
+  font-family: 'Ubuntu Mono', monospace;
+  border-left: 1px solid #555;
+  margin: 0;
+  padding: 0 30px;
+}
 .content {
   margin: 120px auto;
   max-width: 800px;
+}
+@media (max-width: 800px) {
+  .content {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
 }
 table {
   width: 100%;
