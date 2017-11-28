@@ -13,5 +13,8 @@
   "devDependencies": {
     "maw": "^0.6.0",
     "showdown": "^1.8.1"
+  },
+  "dependencies": {
+    "markdown-it": "^8.4.0"
   }
 }
