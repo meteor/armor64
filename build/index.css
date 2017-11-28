@@ -1,8 +1,44 @@
 * {
-  font-family: sans-serif;
   box-sizing: border-box;
 }
+body {
+  display: inline-block;
+  width: 100%;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  color: #555;
+  font-size: 18px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+em {
+  color: #222;
+  font-family: 'Ubuntu Mono', monospace;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 30px;
+}
+h1,
+h2 {
+  margin-top: 75px;
+}
 .content {
-  margin: 30px auto;
+  margin: 120px auto;
   max-width: 800px;
+}
+table {
+  width: 100%;
 }

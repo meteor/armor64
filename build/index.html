@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Armor64</title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono" rel="stylesheet">
     <link rel="stylesheet" href="/index.css">
   </head>
   <body>
@@ -27,8 +28,7 @@ An encoded stream can be validated during decoding or in one pass.</p>
 </ul>
 <h2>FAQ</h2>
 <h3>Why not Base64?</h3>
-<p>Base64 is effectively not a specific encoding but rather <a href="https://en.wikipedia.org/wiki/Base64#Variants_summary_table">a family of encodings</a>.<br>
-<code>=</code>-padding is often possible, sometimes required. Many libraries do not offer unpadded variants.<br>
+<p>Base64 is effectively not a specific encoding but rather <a href="https://en.wikipedia.org/wiki/Base64#Variants_summary_table">a family of encodings</a>. <code>=</code> Padding is often possible, sometimes required. Many libraries do not offer unpadded variants.<br>
 Some variants allow newlines, some don't.<br>
 Some variants use a URL-safe alphabet, some don't.<br>
 Few variants specify a canonical encoding, fewer mandate that it be used.<br>

@@ -26,8 +26,7 @@ Armor64 is stable in two ways:
 
 ### Why not Base64?
 
-Base64 is effectively not a specific encoding but rather [a family of encodings](https://en.wikipedia.org/wiki/Base64#Variants_summary_table).  
-`=`-padding is often possible, sometimes required. Many libraries do not offer unpadded variants.  
+Base64 is effectively not a specific encoding but rather [a family of encodings](https://en.wikipedia.org/wiki/Base64#Variants_summary_table). `=` Padding is often possible, sometimes required. Many libraries do not offer unpadded variants.  
 Some variants allow newlines, some don't.  
 Some variants use a URL-safe alphabet, some don't.  
 Few variants specify a canonical encoding, fewer mandate that it be used.  
