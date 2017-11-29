@@ -8,6 +8,8 @@
 @maxwidth: 800px;
 @color-gray: #555;
 @color-dark: #222;
+@title-font: 'Arvo', sans-serif;
+@body-font: 'Open Sans', sans-serif;
 
 body {
   display: inline-block;
@@ -17,14 +19,14 @@ body {
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: @body-font;
   color: @color-gray;
   font-size: 18px;
 }
 
 h1,h2,h3,h4,h5,h6,em {
   color: @color-dark;
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: @title-font;
 }
 
 h1,h2,h3,h4,h5,h6 {
